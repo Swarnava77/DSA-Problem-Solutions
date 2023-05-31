@@ -1,0 +1,56 @@
+class Car implements Comparable<Car>{
+
+            int position, speed, index;
+
+            public Car(int position, int speed, int index){
+
+                this.position = position;
+                this.speed = speed;
+                this.index = index;
+            }
+
+            public int compareTo(Car obj){
+                
+                return this.position - obj.position;
+            }
+        }
+
+class Solution {
+    
+    public double[] getCollisionTimes(int[][] cars) {
+            
+
+       int len = cars.length; 
+
+       double answer[] = new double[cars.length];
+
+       PriorityQueue<Car> carPq = new PriorityQueue<>(Collections.reverseOrder());
+
+       for(int r=0; r<len; r++)
+        carPq.add(new Car(cars[r][0], cars[r][1], r));
+
+       double prevSpeed = 0, prevPosition=0;
+       for(int i=0; i<len; i++){
+
+           Car current = carPq.remove();
+
+           if(i==0){
+               answer[current.index] = -1;
+               prevSpeed = current.speed;
+               prevPosition = current.position;
+           }
+           else{
+            if(current.speed > prevSpeed){
+
+               answer[current.index] = (prevPosition-current.position) / (current.speed-prevSpeed);
+            }
+            else
+                answer[current.index] = -1;
+           }
+
+       } 
+
+    return answer;
+
+    }
+}
