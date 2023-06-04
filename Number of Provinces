@@ -1,0 +1,59 @@
+class Solution {
+    HashMap<Integer, Integer> parent = new HashMap<Integer, Integer>();
+    HashMap<Integer, Integer> rank = new HashMap<Integer, Integer>();
+    
+    public int findCircleNum(int[][] isConnected) {
+        
+        for(int i=0;i<isConnected.length;i++){
+            parent.put(i, i);
+            rank.put(i,1);
+        }
+        
+        int res = 0;
+        for(int i=0;i<isConnected.length;i++){
+            for(int j=0;j<isConnected[0].length;j++){
+                if(isConnected[i][j]==1 && union(i, j)){
+                    System.out.println("i,j"+i+","+j);
+                    res++;
+                    System.out.println("res"+res);
+                }
+            }
+        }
+        
+        return isConnected.length-res;
+    }
+    
+    
+    private int findParent(int node){
+        if(node == parent.get(node)){
+            return node;
+        }
+        
+        int nodeParent = findParent(parent.get(node));
+        parent.put(node, nodeParent);
+        return nodeParent;
+    }
+    
+    
+    private boolean union(int node1, int node2){
+        int parent1 = findParent(node1);
+        int parent2 = findParent(node2);
+        
+        if(parent1==parent2) return false; 
+       
+        int rank1 = rank.get(parent1);
+        int rank2 = rank.get(parent2);
+    
+        
+        if(rank1<rank2){
+            parent.put(parent1, parent2);
+        }else if(rank2<rank1){
+            parent.put(parent2, parent1);
+        }else{
+            parent.put(parent1, parent2);
+            rank.put(parent2, rank.get(parent2)+1);
+        }
+        
+        return true;
+    }
+}
