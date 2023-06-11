@@ -1,0 +1,54 @@
+class Solution {
+
+    //long mod = 1000000007;
+    public int numOfWays(int[] nums) {
+        
+        ArrayList<Integer> num = new ArrayList<>();
+
+        for(int i=0; i<nums.length; i++){
+            num.add(nums[i]);
+        }
+
+       return (ways(num)-1);
+    
+    }
+
+    public int ways(ArrayList<Integer> num){
+
+        if(num.size()<=2)
+            return 1;
+
+        int root = num.get(0);
+        ArrayList<Integer> left, right;
+        left = new ArrayList<>();
+        right = new ArrayList<>();
+        
+        for(int i=1; i<num.size(); i++){
+
+            if(num.get(i) < root)
+                left.add(num.get(i));
+            else
+                right.add(num.get(i));
+        }
+
+        return com(left.size()+right.size(), left.size()) * ways(left) * ways(right);
+
+    }
+
+    public int com(int n, int r){
+
+        int div = 1, dis = 1;
+
+        if(r > n/2)
+            r = n-r;
+
+        for(int i = 1; i<=r; i++){
+
+            div *= n--;
+            dis *= i;
+        }
+
+        return (div/dis);
+    }
+
+}
