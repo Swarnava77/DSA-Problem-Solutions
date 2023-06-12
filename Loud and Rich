@@ -1,0 +1,56 @@
+class Solution {
+
+    ArrayList<Integer>[] rich;
+    int result[];
+    boolean visited[];
+
+    public int[] loudAndRich(int[][] richer, int[] quiet) {
+        
+        int v = quiet.length;
+
+        rich = new ArrayList[v];
+        result = new int[v];
+        visited = new boolean[v];
+
+        //vertex
+        for(int i=0; i<v; i++)
+            rich[i] = new ArrayList<>();
+
+        for(int i=0; i<richer.length; i++)
+            rich[richer[i][1]].add(richer[i][0]);
+
+         
+        for(int i=0; i<v; i++){
+
+            if(!visited[i])
+                dfs(i, quiet);
+        } 
+
+        return result;       
+    }
+
+    public int dfs(int i,  int [] quiet){
+
+        visited[i] = true;
+
+        int leastQuiet = i, currentLeastQuiet=0;
+
+        for(Integer val : rich[i]){
+
+            if(!visited[val]){
+                currentLeastQuiet = dfs(val, quiet);
+
+                if(quiet[currentLeastQuiet] < quiet[leastQuiet])
+                    leastQuiet = currentLeastQuiet;
+            }
+            else{
+                if(quiet[result[val]] < quiet[leastQuiet])
+                    leastQuiet = result[val];
+            }
+        }
+        result[i] = leastQuiet;
+
+        return leastQuiet;
+
+    }
+}
