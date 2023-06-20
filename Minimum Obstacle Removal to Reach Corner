@@ -1,0 +1,43 @@
+class Solution {  
+
+    public int minimumObstacles(int[][] grid) {
+        
+        int[][] direction = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+
+        int m = grid.length;
+        int n = grid[0].length;
+        int d[][] = new int[m][n];
+
+        for(int[]row : d)
+            Arrays.fill(row, Integer.MAX_VALUE);
+
+        d[0][0] = grid[0][0];
+
+        //x, y, weight
+        PriorityQueue<int[]> pq = new PriorityQueue<>( (a, b)-> (a[2]-b[2]) );
+
+        pq.offer(new int[]{d[0][0], 0, 0});
+
+        while(!pq.isEmpty()){
+
+            int cur[] = pq.poll();
+            int x = cur[0];
+            int y = cur[1];
+            int curCost = cur[2];
+
+            for(int dir[]: direction){
+
+                int x1 = x + dir[0];
+                int y1 = y + dir[1];
+
+                if(0<=x1 && x1<m && 0<=y1 && y1<n && curCost + grid[x1][y1] < d[x1][y1]){
+
+                    d[x1][y1] = curCost + grid[x1][y1];
+                    pq.offer(new int[]{x1, y1, d[x1][y1]});
+                }
+            }
+        }
+
+        return d[m-1][n-1];
+    }
+}
