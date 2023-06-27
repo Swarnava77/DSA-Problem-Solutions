@@ -1,0 +1,28 @@
+class Solution {
+    public int maxSatisfaction(int[] satisfaction) {
+        Arrays.sort(satisfaction);
+
+        int sum=0, start, n = satisfaction.length;
+
+        for(start=n-1; start>=0; start--){
+
+            sum += satisfaction[start];
+
+            if(sum<0)
+                break;            
+        }
+
+        start++;
+
+        int time = 0, t=1;
+
+        for(int i=start; i<n; i++){
+
+            time += (t++) * satisfaction[i];
+        }
+
+        return time;
+
+
+    }
+}
